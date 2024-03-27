@@ -31,8 +31,15 @@ public class RatingsList implements Iterable<RatingNode> {
     public RatingNode find(int movieId) {
         RatingNode node = head;
         // FILL IN CODE: find the node with the given movieId.
-
-        return null; // change
+        while(node != null && node.getMovieId() != movieId){
+            node = node.next();
+        }
+        if(node != null){
+            return node;
+        }else{
+            System.out.println("false");
+            return null;
+        }
     }
 
     /**
@@ -78,8 +85,17 @@ public class RatingsList implements Iterable<RatingNode> {
      */
     public void append(int movieId, double rating) {
         RatingNode curr = head;
+        RatingNode prev = null;
+        RatingNode newNode = new RatingNode(movieId, rating);
         if (head == null) {
-            head = new RatingNode(movieId, rating);
+            head = newNode;
+            return;
+        }else{
+            while(curr != null){
+                prev = curr;
+                curr = curr.next();
+            }
+            prev.setNext(newNode);
             return;
         }
         // FILL IN CODE: handle a general case, when head is not null
@@ -105,8 +121,15 @@ public class RatingsList implements Iterable<RatingNode> {
         RatingNode node = new RatingNode(movieId, rating);
         RatingNode curr = head;
         RatingNode prev = null;
-        while (curr != null && (curr.getMovieRating() > rating)) {
-            // FILL IN CODE
+        if(head == null){
+            head = node;
+        }else{
+            while (curr != null && (curr.getMovieRating() >= rating)) {
+                prev = curr;
+                curr = curr.next();
+            }
+            prev.setNext(node);
+            node.setNext(curr);
         }
     }
 
@@ -125,6 +148,10 @@ public class RatingsList implements Iterable<RatingNode> {
         // Go over nodes of this list using curr1 and for each node,
         // put movieId in the hash map as the key and rating as the value.
         // FILL IN CODE
+        while(curr1 != null){
+            map.put(curr1.getMovieId(),curr1.getMovieRating());
+            curr1 = curr1.next();
+        }
 
         RatingNode curr2 = otherList.head();
         double similarity = 0;
@@ -136,7 +163,25 @@ public class RatingsList implements Iterable<RatingNode> {
         // In the formula, x_i is the rating of some movie from "this" list, y_i is the rating of the same movie from the otherList.
         // Note that they may not be in the same positions in the RatingsList!
         // n is the number of movie ids that occur in both lists.
+        double sumxy = 0;
+        double sumx = 0;
+        double sumy = 0;
+        double sumx2 = 0;
+        double sumy2 = 0;
 
+        while(curr2 != null){
+            if(map.containsKey(curr2.getMovieId())){
+                n++;
+                sumxy += curr2.getMovieRating() * map.get(curr2.getMovieId());
+                sumx += curr2.getMovieRating();
+                sumy += map.get(curr2.getMovieId());
+                sumx2 += curr2.getMovieRating() * curr2.getMovieRating();
+                sumy2 += map.get(curr2.getMovieId()) * map.get(curr2.getMovieId());
+            }
+            curr2 = curr2.next();
+        }
+        similarity = ((n * sumxy) - (sumx * sumy))/
+                (Math.sqrt((n * sumx2) - (sumx * sumx)) * (Math.sqrt((n * sumy2) - (sumy * sumy))));
 
         return similarity;
     }
@@ -153,7 +198,20 @@ public class RatingsList implements Iterable<RatingNode> {
         RatingsList res = new RatingsList();
         RatingNode curr = head;
         // FILL IN CODE:
-
+        RatingNode curr1 = null;
+        int i = 0;
+        while(curr != null || i <= endRating){
+            if(i >= begRating){
+                if(res.head == null){
+                    res.head = curr;
+                    curr1 = res.head;
+                }else{
+                    curr1.setNext(curr);
+                }
+            }
+            curr = curr.next();
+            curr1 = curr1.next();
+        }
         return res;
     }
 
@@ -179,7 +237,17 @@ public class RatingsList implements Iterable<RatingNode> {
     public RatingsList getNBestRankedMovies(int n) {
         RatingsList result = new RatingsList();
         // FILL IN CODE
-
+        RatingNode curr = head;
+        RatingNode curr1 = null;
+        if(n >= 1){
+            result.head = curr;
+            curr1 = result.head;
+        }
+        for(int i = 1; i < n; i++){
+            curr1.setNext(curr);
+            curr1 = curr1.next();
+            curr = curr.next();
+        }
         return result;
     }
 
@@ -256,6 +324,10 @@ public class RatingsList implements Iterable<RatingNode> {
         movieRatingsList.insertByRating(3, 2.0);
         movieRatingsList.insertByRating(2, 4.0);
         movieRatingsList.insertByRating(4, 3.0);
+        movieRatingsList.insertByRating(5, 1.0);
+        movieRatingsList.insertByRating(6, 5.0);
+        movieRatingsList.append(7,3.0);
+
         movieRatingsList.print(); // check if insertions worked correctly; the list should be sorted in descreasing order of rating.
         /* Expected: sorted by ratings in descreasing order
         1, 5.0
@@ -266,6 +338,9 @@ public class RatingsList implements Iterable<RatingNode> {
          */
         // TODO: Call different methods on the movieRatings list
         // to see if they work correctly.
+        System.out.println(movieRatingsList.find(3).getMovieRating());
+
+
 
     }
 
