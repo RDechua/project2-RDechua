@@ -60,7 +60,15 @@ public class RatingsList implements Iterable<RatingNode> {
         }
         // Delete the node
         // Reinsert: Call insertByRating for the updated node with the new rating
+        RatingNode curr = head;
+        RatingNode prev = null;
+        while(curr != node){
+            prev = curr;
+            curr = curr.next();
 
+        }
+        prev.setNext(curr.next());
+        insertByRating(movieId, newRating);
     }
 
     /**
@@ -121,16 +129,40 @@ public class RatingsList implements Iterable<RatingNode> {
         RatingNode node = new RatingNode(movieId, rating);
         RatingNode curr = head;
         RatingNode prev = null;
+        while(curr != null && (curr.getMovieRating() > rating)){
+            // FILL IN CODE
+            prev = curr;
+            curr = curr.next();
+        }
+
         if(head == null){
             head = node;
         }else{
-            while (curr != null && (curr.getMovieRating() >= rating)) {
-                prev = curr;
-                curr = curr.next();
+            if(curr != null){
+                if(curr.getMovieRating() == rating){
+                    if(curr.getMovieId() > movieId){
+                        prev = curr;
+                        curr = curr.next();
+                    }
+                }
             }
-            prev.setNext(node);
-            node.setNext(curr);
+            if(prev == null){
+                if(curr.getMovieRating() <= rating){
+                    node.setNext(curr);
+                    head = node;
+                }else{
+                    node.setNext(curr.next());
+                    curr.setNext(node);
+                }
+            }else{
+                node.setNext(curr);
+                prev.setNext(node);
+            }
         }
+
+
+
+
     }
 
     /**
@@ -199,18 +231,13 @@ public class RatingsList implements Iterable<RatingNode> {
         RatingNode curr = head;
         // FILL IN CODE:
         RatingNode curr1 = null;
-        int i = 0;
-        while(curr != null || i <= endRating){
+        int i = 1;
+        while(curr != null && i <= endRating){
             if(i >= begRating){
-                if(res.head == null){
-                    res.head = curr;
-                    curr1 = res.head;
-                }else{
-                    curr1.setNext(curr);
-                }
+                res.append(curr.getMovieId(), curr.getMovieRating());
             }
             curr = curr.next();
-            curr1 = curr1.next();
+            i++;
         }
         return res;
     }
@@ -238,15 +265,11 @@ public class RatingsList implements Iterable<RatingNode> {
         RatingsList result = new RatingsList();
         // FILL IN CODE
         RatingNode curr = head;
-        RatingNode curr1 = null;
-        if(n >= 1){
-            result.head = curr;
-            curr1 = result.head;
-        }
-        for(int i = 1; i < n; i++){
-            curr1.setNext(curr);
-            curr1 = curr1.next();
+        int i = 0;
+        while(curr != null && i < n){
+            result.append(curr.getMovieId(), curr.getMovieRating());
             curr = curr.next();
+            i++;
         }
         return result;
     }
@@ -264,6 +287,10 @@ public class RatingsList implements Iterable<RatingNode> {
     public RatingsList reverse(RatingNode head) {
         RatingsList r = new RatingsList();
         // FILL IN CODE:
+        if(head != null){
+            this.reverse(head.next());
+            r.append(head.getMovieId(), head.getMovieRating());
+        }
 
         return r;
     }
@@ -319,29 +346,35 @@ public class RatingsList implements Iterable<RatingNode> {
     // You can use this method to check if your RatingsList works correctly, before you are ready to run the tests
     public static void main(String[] args) {
         RatingsList movieRatingsList  = new RatingsList();
-        // Add movies and ratings manually
-        movieRatingsList.insertByRating(1, 5.0);
+        movieRatingsList.append(1, 5.0);
         movieRatingsList.insertByRating(3, 2.0);
-        movieRatingsList.insertByRating(2, 4.0);
-        movieRatingsList.insertByRating(4, 3.0);
-        movieRatingsList.insertByRating(5, 1.0);
-        movieRatingsList.insertByRating(6, 5.0);
+        movieRatingsList.insertByRating(6, 2.0);
         movieRatingsList.append(7,3.0);
+        movieRatingsList.setRating(3,1.0);
+        movieRatingsList.print();
 
-        movieRatingsList.print(); // check if insertions worked correctly; the list should be sorted in descreasing order of rating.
-        /* Expected: sorted by ratings in descreasing order
-        1, 5.0
-        2, 4.0
-        4, 3.0
-        3, 2.0
-        5, 1.0
+        /*
+        RatingsList movieRatingsList2  = new RatingsList();
+        movieRatingsList2.insertByRating(1, 4.0);
+        movieRatingsList2.insertByRating(3, 3.0);
+        movieRatingsList2.insertByRating(8, 2.0);
+        movieRatingsList2.append(7,3.0);
+        movieRatingsList2.setRating(3,1.0);
+        movieRatingsList2.print();
+
+        System.out.println(movieRatingsList.computeCorrelation(movieRatingsList2));
          */
-        // TODO: Call different methods on the movieRatings list
-        // to see if they work correctly.
-        System.out.println(movieRatingsList.find(3).getMovieRating());
+        System.out.println("nbest");
+        RatingsList nbest = movieRatingsList.getNBestRankedMovies(3);
+        nbest.print();
 
+        System.out.println("sublist");
+        RatingsList sublist = movieRatingsList.sublist(2,3);
+        sublist.print();
 
-
+        System.out.println("reverse");
+        RatingsList reverse = movieRatingsList.reverse(movieRatingsList.head);
+        sublist.print();
     }
 
 }
