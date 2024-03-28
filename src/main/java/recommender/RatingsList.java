@@ -288,10 +288,9 @@ public class RatingsList implements Iterable<RatingNode> {
         RatingsList r = new RatingsList();
         // FILL IN CODE:
         if(head != null){
-            this.reverse(head.next());
+            r = reverse(head.next());
             r.append(head.getMovieId(), head.getMovieRating());
         }
-
         return r;
     }
 
@@ -374,7 +373,7 @@ public class RatingsList implements Iterable<RatingNode> {
 
         System.out.println("reverse");
         RatingsList reverse = movieRatingsList.reverse(movieRatingsList.head);
-        sublist.print();
+        reverse.print();
     }
 
 }
