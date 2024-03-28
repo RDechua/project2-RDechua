@@ -230,14 +230,11 @@ public class RatingsList implements Iterable<RatingNode> {
         RatingsList res = new RatingsList();
         RatingNode curr = head;
         // FILL IN CODE:
-        RatingNode curr1 = null;
-        int i = 1;
-        while(curr != null && i <= endRating){
-            if(i >= begRating){
+        while(curr != null){
+            if(curr.getMovieRating() >= begRating && curr.getMovieRating() <= endRating){
                 res.append(curr.getMovieId(), curr.getMovieRating());
             }
             curr = curr.next();
-            i++;
         }
         return res;
     }
@@ -368,7 +365,7 @@ public class RatingsList implements Iterable<RatingNode> {
         nbest.print();
 
         System.out.println("sublist");
-        RatingsList sublist = movieRatingsList.sublist(2,3);
+        RatingsList sublist = movieRatingsList.sublist(1,2);
         sublist.print();
 
         System.out.println("reverse");
