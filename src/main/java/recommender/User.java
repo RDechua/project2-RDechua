@@ -22,6 +22,8 @@ public class User {
         return userId;
     }
 
+    public int[] getMovieIds(){return movieRatings.getMovieIds();}
+
 
     /**
      * Add rating info for a given movie to the RatingsList
@@ -34,7 +36,7 @@ public class User {
     public void insert(int movieId, double rating) {
         // FILL IN CODE:
         // Call "insertByRating" method in the RatingsList.
-
+        movieRatings.insertByRating(movieId, rating);
     }
 
     /**

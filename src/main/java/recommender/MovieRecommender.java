@@ -82,6 +82,19 @@ public class MovieRecommender {
             // you need to call insert(movieId, rating) on that user.
             // If this is a new User, point users[userid] to a new User object, and
             // call insert(movieId, rating) on the new user.
+            String str;
+            while((str = br.readLine()) != null){
+                String[] set = str.split(",");
+                if(set.length == 4){
+                    if(users[Integer.parseInt(set[0])] == null){
+                        User user = new User(Integer.parseInt(set[0]));
+                        user.insert(Integer.parseInt(set[1]), Double.parseDouble(set[2]));
+                        users[Integer.parseInt(set[0])] = user;
+                    }else{
+                        users[Integer.parseInt(set[0])].insert(Integer.parseInt(set[1]), Double.parseDouble(set[2]));
+                    }
+                }
+            }
 
 
         } catch (IOException e) {
@@ -121,6 +134,10 @@ public class MovieRecommender {
                   // FILL IN CODE
                 // Call computeCorrelation from RatingsList class
                   // Update it and user if you find a "better" value
+                  if(thisUser.computeSimilarity(users[id]) > maxSimilarity){
+                      mostSimilarUser = users[id];
+                      maxSimilarity = thisUser.computeSimilarity(users[id]);
+                  }
 
               }
             }
@@ -153,6 +170,7 @@ public class MovieRecommender {
         // To recommend movies, get mostSimilarUser's best movies rated as 5,
         // and remove movies this user have seen already.
 
+
     }
 
     public void printUsers(String filename) {
@@ -161,6 +179,10 @@ public class MovieRecommender {
                 if (user != null) {
                     pr.print("(" + user.getId() + ") ");
                     // FILL IN CODE: print movies/ratings for this user
+                    for(int i = 0; i < user.getMovieIds().length; i++){
+                        pr.print(user.getMovieIds()[i] + ":" + user.getRating(user.getMovieIds()[i]) + "; ");
+                    }
+                    pr.println();
                 }
             }
             pr.flush();

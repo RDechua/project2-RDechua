@@ -291,6 +291,22 @@ public class RatingsList implements Iterable<RatingNode> {
         return r;
     }
 
+    public int[] getMovieIds(){
+        RatingNode curr = head;
+        int n = 0;
+        while(curr != null){
+            curr = curr.next();
+            n++;
+        }
+        curr = head;
+        int[] movieIdList = new int[n];
+        for(int i = 0; i < n; i++){
+            movieIdList[i] = curr.getMovieId();
+            curr = curr.next();
+        }
+        return movieIdList;
+    }
+
 
     /**
      * Returns an iterator for the list
