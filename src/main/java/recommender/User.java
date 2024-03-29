@@ -47,8 +47,16 @@ public class User {
      */
     public int[] getFavoriteMovies(int n) {
         // FILL IN CODE:
-
-        return null;
+        int[] favList = new int[n];
+        RatingNode head = movieRatings.head();
+        RatingNode curr = head;
+        for(int i = 0; i < favList.length; i++){
+            if(curr.getMovieRating() == 5){
+                favList[i] = curr.getMovieId();
+            }
+            curr = curr.next();
+        }
+        return favList;
     }
 
     /**

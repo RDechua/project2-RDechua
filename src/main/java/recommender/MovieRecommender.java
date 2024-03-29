@@ -169,8 +169,28 @@ public class MovieRecommender {
         // System.out.println("The user with highest Pearson correlation: " + mostSimilarUser.getId());
         // To recommend movies, get mostSimilarUser's best movies rated as 5,
         // and remove movies this user have seen already.
+        StringBuilder sb = new StringBuilder();
 
+        int[] favMovies = mostSimilarUser.getFavoriteMovies(num);
+        System.out.println(num);
 
+        for(int i = 0; i < favMovies.length; i++){
+            boolean print = true;
+            for(int j = 0; j < users[userid].getMovieIds().length; j++){
+                if(favMovies[i] == users[userid].getMovieIds()[j]){
+                    print = false;
+                }
+            }
+            if(print){
+                sb.append(movies[favMovies[i]]);
+                sb.append("\n");
+            }
+        }
+        try (FileWriter file = new FileWriter(filename)){
+            file.write(sb.toString());
+        }catch(IOException e){
+            e.printStackTrace();
+        }
     }
 
     public void printUsers(String filename) {
