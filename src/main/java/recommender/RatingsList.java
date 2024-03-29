@@ -37,7 +37,6 @@ public class RatingsList implements Iterable<RatingNode> {
         if(node != null){
             return node;
         }else{
-            System.out.println("false");
             return null;
         }
     }
@@ -65,9 +64,12 @@ public class RatingsList implements Iterable<RatingNode> {
         while(curr != node){
             prev = curr;
             curr = curr.next();
-
         }
-        prev.setNext(curr.next());
+        if(prev == null){ //if we were to change head
+            head = curr.next();
+        }else{
+            prev.setNext(curr.next());
+        }
         insertByRating(movieId, newRating);
     }
 
@@ -97,14 +99,12 @@ public class RatingsList implements Iterable<RatingNode> {
         RatingNode newNode = new RatingNode(movieId, rating);
         if (head == null) {
             head = newNode;
-            return;
         }else{
             while(curr != null){
                 prev = curr;
                 curr = curr.next();
             }
             prev.setNext(newNode);
-            return;
         }
         // FILL IN CODE: handle a general case, when head is not null
 
@@ -134,7 +134,6 @@ public class RatingsList implements Iterable<RatingNode> {
             prev = curr;
             curr = curr.next();
         }
-
         if(head == null){
             head = node;
         }else{
@@ -362,7 +361,7 @@ public class RatingsList implements Iterable<RatingNode> {
         movieRatingsList.insertByRating(3, 2.0);
         movieRatingsList.insertByRating(6, 2.0);
         movieRatingsList.append(7,3.0);
-        movieRatingsList.setRating(3,1.0);
+        movieRatingsList.setRating(1,1.0);
         movieRatingsList.print();
 
         /*
