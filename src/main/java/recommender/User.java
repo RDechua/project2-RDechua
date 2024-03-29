@@ -34,8 +34,6 @@ public class User {
      * @param rating  rating of the movie
      */
     public void insert(int movieId, double rating) {
-        // FILL IN CODE:
-        // Call "insertByRating" method in the RatingsList.
         movieRatings.insertByRating(movieId, rating);
     }
 
@@ -45,13 +43,11 @@ public class User {
      * @param n  number of movies to return
      * @return array containing movie ids this user rated the highest
      */
-    public int[] getFavoriteMovies(int n) {
-        // FILL IN CODE:
+    public int[] getFavoriteMovies(int n) { //helper method for printUser in MovieRecommender
         int[] favList = new int[n];
-        RatingNode head = movieRatings.head();
-        RatingNode curr = head;
+        RatingNode curr = movieRatings.head();
         for(int i = 0; i < favList.length; i++){
-            if(curr.getMovieRating() == 5){
+            if(curr.getMovieRating() == 5){ //only accepts movie with a 5 rating
                 favList[i] = curr.getMovieId();
             }
             curr = curr.next();
