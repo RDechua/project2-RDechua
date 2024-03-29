@@ -84,19 +84,17 @@ public class MovieRecommender {
             // call insert(movieId, rating) on the new user.
             String str;
             while((str = br.readLine()) != null){
-                String[] set = str.split(",");
+                String[] set = str.split(","); //splits the line into the array
                 if(set.length == 4){
-                    if(users[Integer.parseInt(set[0])] == null){
+                    if(users[Integer.parseInt(set[0])] == null){ //if it's a new user, initialize
                         User user = new User(Integer.parseInt(set[0]));
                         user.insert(Integer.parseInt(set[1]), Double.parseDouble(set[2]));
                         users[Integer.parseInt(set[0])] = user;
-                    }else{
+                    }else{ //else, insert given information
                         users[Integer.parseInt(set[0])].insert(Integer.parseInt(set[1]), Double.parseDouble(set[2]));
                     }
                 }
             }
-
-
         } catch (IOException e) {
             System.out.println(e);
         }
@@ -125,20 +123,17 @@ public class MovieRecommender {
         User mostSimilarUser = null;
         double maxSimilarity = -10000;
         User thisUser = users[userid];
-
         // Go over all the other users
         for (int id = 0; id < users.length; id++) {
             // going over other users (their ids)
             if (users[id] != null)  {
               if (id != userid) { // do not compare with yourself.
-                  // FILL IN CODE
                 // Call computeCorrelation from RatingsList class
                   // Update it and user if you find a "better" value
-                  if(thisUser.computeSimilarity(users[id]) > maxSimilarity){
+                  if(thisUser.computeSimilarity(users[id]) > maxSimilarity){ //assign maxSimilarity if the correlation is higher than all previous correlations
                       mostSimilarUser = users[id];
                       maxSimilarity = thisUser.computeSimilarity(users[id]);
                   }
-
               }
             }
         }
@@ -159,7 +154,6 @@ public class MovieRecommender {
      *                 Format of the file: one movie title per each line
      */
     public void findRecommendations(int userid, int num, String filename) {
-        // FILL IN CODE
         // compute similarity between userid and all the other users
         // find the most similar user and recommend movies that the most similar
         // user rated as 5.
@@ -170,24 +164,21 @@ public class MovieRecommender {
         // To recommend movies, get mostSimilarUser's best movies rated as 5,
         // and remove movies this user have seen already.
         StringBuilder sb = new StringBuilder();
-
         int[] favMovies = mostSimilarUser.getFavoriteMovies(num);
-        System.out.println(num);
-
         for(int i = 0; i < favMovies.length; i++){
             boolean print = true;
             for(int j = 0; j < users[userid].getMovieIds().length; j++){
-                if(favMovies[i] == users[userid].getMovieIds()[j]){
+                if(favMovies[i] == users[userid].getMovieIds()[j]){ //if the user has watched the selected movie, don't print
                     print = false;
                 }
             }
-            if(print){
+            if(print){ //if not watched yet, appends to sb
                 sb.append(movies[favMovies[i]]);
                 sb.append("\n");
             }
         }
         try (FileWriter file = new FileWriter(filename)){
-            file.write(sb.toString());
+            file.write(sb.toString()); //writes sb into the given file
         }catch(IOException e){
             e.printStackTrace();
         }
@@ -198,8 +189,7 @@ public class MovieRecommender {
             for (User user : users) {
                 if (user != null) {
                     pr.print("(" + user.getId() + ") ");
-                    // FILL IN CODE: print movies/ratings for this user
-                    for(int i = 0; i < user.getMovieIds().length; i++){
+                    for(int i = 0; i < user.getMovieIds().length; i++){ //utilizes the helper method getMovieIds from class User
                         pr.print(user.getMovieIds()[i] + ":" + user.getRating(user.getMovieIds()[i]) + "; ");
                     }
                     pr.println();
