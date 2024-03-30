@@ -46,8 +46,8 @@ public class User {
     public int[] getFavoriteMovies(int n) { //helper method for printUser in MovieRecommender
         int[] favList = new int[n];
         RatingNode curr = movieRatings.head();
-        for(int i = 0; i < favList.length; i++){
-            if(curr.getMovieRating() == 5){ //only accepts movie with a 5 rating
+        for(int i = 0; i < favList.length; i++) {
+            if(curr.getMovieRating() == 5) { //only accepts movie with a 5 rating
                 favList[i] = curr.getMovieId();
             }
             curr = curr.next();

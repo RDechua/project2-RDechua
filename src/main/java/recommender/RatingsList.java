@@ -30,7 +30,7 @@ public class RatingsList implements Iterable<RatingNode> {
      */
     public RatingNode find(int movieId) {
         RatingNode node = head;
-        while(node != null && node.getMovieId() != movieId){
+        while(node != null && node.getMovieId() != movieId) {
             node = node.next();
         }
         return node;
@@ -52,13 +52,13 @@ public class RatingsList implements Iterable<RatingNode> {
         }
         RatingNode curr = head;
         RatingNode prev = null;
-        while(curr != node){
+        while(curr != node) {
             prev = curr;
             curr = curr.next();
         }
-        if(prev == null){ //if we were to change head, the next node becomes head
+        if(prev == null) { //if we were to change head, the next node becomes head
             head = curr.next();
-        }else{
+        }else {
             prev.setNext(curr.next());
         }
         insertByRating(movieId, newRating); //insert the new node
@@ -91,7 +91,7 @@ public class RatingsList implements Iterable<RatingNode> {
         if (head == null) {
             head = newNode;
         }else{
-            while(curr != null){ //iterates through the node until it reaches the end
+            while(curr != null) { //iterates through the node until it reaches the end
                 prev = curr;
                 curr = curr.next();
             }
@@ -118,23 +118,23 @@ public class RatingsList implements Iterable<RatingNode> {
         RatingNode node = new RatingNode(movieId, rating);
         RatingNode curr = head;
         RatingNode prev = null;
-        while(curr != null && (curr.getMovieRating() > rating)){ //finds the appropriate position for the new node
+        while(curr != null && (curr.getMovieRating() > rating)) { //finds the appropriate position for the new node
             prev = curr;
             curr = curr.next();
         }
-        if(head == null){ //if list is empty
+        if(head == null) { //if list is empty
             head = node;
         }else{
-            if(curr != null){
-                if(curr.getMovieRating() == rating){
-                    if(curr.getMovieId() > movieId){ //if the movie rating is equal and the movie id in the list is greater than the new one
+            if(curr != null) {
+                if(curr.getMovieRating() == rating) {
+                    if(curr.getMovieId() > movieId) { //if the movie rating is equal and the movie id in the list is greater than the new one
                         prev = curr;
                         curr = curr.next();
                     }
                 }
             }
             node.setNext(curr);
-            if(prev == null){ //if appropriate position is head (rating >= head and id >)
+            if(prev == null) { //if appropriate position is head (rating >= head and id >)
                 head = node;
             }else{
                 prev.setNext(node);
@@ -156,7 +156,7 @@ public class RatingsList implements Iterable<RatingNode> {
         RatingNode curr1 = head;
         // Go over nodes of this list using curr1 and for each node,
         // put movieId in the hash map as the key and rating as the value.
-        while(curr1 != null){
+        while(curr1 != null) {
             map.put(curr1.getMovieId(),curr1.getMovieRating());
             curr1 = curr1.next();
         }
@@ -169,8 +169,8 @@ public class RatingsList implements Iterable<RatingNode> {
         double sumy = 0; //sum of y
         double sumx2 = 0; //sum of x * x
         double sumy2 = 0; //sum of y * y
-        while(curr2 != null){
-            if(map.containsKey(curr2.getMovieId())){
+        while(curr2 != null) {
+            if(map.containsKey(curr2.getMovieId())) {
                 n++;
                 //summing appropriate values
                 sumxy += curr2.getMovieRating() * map.get(curr2.getMovieId());
@@ -197,8 +197,8 @@ public class RatingsList implements Iterable<RatingNode> {
     public RatingsList sublist(int begRating, int endRating) {
         RatingsList res = new RatingsList();
         RatingNode curr = head;
-        while(curr != null){
-            if(curr.getMovieRating() >= begRating && curr.getMovieRating() <= endRating){ //if in between assigned parameter, append
+        while(curr != null) {
+            if(curr.getMovieRating() >= begRating && curr.getMovieRating() <= endRating) { //if in between assigned parameter, append
                 res.append(curr.getMovieId(), curr.getMovieRating());
             }
             curr = curr.next();
@@ -229,7 +229,7 @@ public class RatingsList implements Iterable<RatingNode> {
         RatingsList result = new RatingsList();
         RatingNode curr = head;
         int i = 0;
-        while(curr != null && i < n){
+        while(curr != null && i < n) {
             result.append(curr.getMovieId(), curr.getMovieRating());
             curr = curr.next();
             i++;
@@ -249,23 +249,23 @@ public class RatingsList implements Iterable<RatingNode> {
      */
     public RatingsList reverse(RatingNode head) {
         RatingsList r = new RatingsList();
-        if(head != null){
+        if(head != null) {
             r = reverse(head.next()); //recursive line (appends node from the end)
             r.append(head.getMovieId(), head.getMovieRating());
         }
         return r;
     }
 
-    public int[] getMovieIds(){ //method for printUsers in MovieRecommender
+    public int[] getMovieIds() { //method for printUsers in MovieRecommender
         RatingNode curr = head;
         int n = 0;
-        while(curr != null){
+        while(curr != null) {
             curr = curr.next();
             n++;
         }
         curr = head;
         int[] movieIdList = new int[n];
-        for(int i = 0; i < n; i++){
+        for(int i = 0; i < n; i++) {
             movieIdList[i] = curr.getMovieId();
             curr = curr.next();
         }
